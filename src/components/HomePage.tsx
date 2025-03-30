@@ -1,8 +1,7 @@
+import { useState, useEffect } from "react";
 import NoteInput from "./NoteInput";
 import SearchBar from "./SearchBar";
 import NoteList from "./NoteList";
-
-import { useState, useEffect } from "react";
 import { auth, db } from "../firebaseConfig";
 import {
   signOut,
@@ -18,6 +17,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import axios from "axios";
+import "./HomePage.css";
 
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
@@ -37,9 +37,7 @@ export default function HomePage() {
     return () => unsubscribe();
   }, []);
 
-  const logout = () => {
-    signOut(auth);
-  };
+  const logout = () => signOut(auth);
 
   const saveNote = async () => {
     if (!note.trim() || !user) return;
@@ -63,12 +61,7 @@ export default function HomePage() {
         "https://api.openai.com/v1/chat/completions",
         {
           model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content: `Summarize this note:\n\n${note}`,
-            },
-          ],
+          messages: [{ role: "user", content: `Summarize this note:\n\n${note}` }],
           temperature: 0.5,
         },
         {
@@ -146,14 +139,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-6">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <p className="text-sm text-gray-600">Logged in as {user?.displayName}</p>
-          <button
-            onClick={logout}
-            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-          >
+    <div className="homepage-container">
+      <div className="homepage-wrapper">
+        <div className="homepage-header">
+          <p className="user-info">Logged in as {user?.displayName}</p>
+          <button onClick={logout} className="logout-button">
             Logout
           </button>
         </div>

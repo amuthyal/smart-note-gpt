@@ -1,0 +1,40 @@
+.homepage-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 24px;
+  }
+  
+  .homepage-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .homepage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .user-info {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .logout-button {
+    background-color: #e53935;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    background-color: #c62828;
+  }
+  

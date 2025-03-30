@@ -1,23 +1,44 @@
+import { FcGoogle } from "react-icons/fc";
+import illustration from "../assets/illustration.png";
+import "./SignInPage.css";
+
 type SignInPageProps = {
-    onSignIn: () => void;
-  };
-  
-  export default function SignInPage({ onSignIn }: SignInPageProps) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200 px-4">
-        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md text-center space-y-5">
-          <div className="text-4xl">📝</div>
-          <h1 className="text-2xl font-bold text-gray-800">Welcome to Smart Note</h1>
-          <p className="text-gray-600 text-sm">Your AI-powered note-taking companion</p>
-          <button
-            onClick={onSignIn}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-full text-sm font-medium shadow"
-          >
+  onSignIn: () => void;
+};
+
+export default function SignInPage({ onSignIn }: SignInPageProps) {
+  return (
+    <div className="signin-container">
+      {/* Left Panel */}
+      <div className="signin-left">
+        <div className="signin-box">
+          <h1 className="main-title">Smart Note App</h1>
+
+          <div className="text-content">
+            <h2 className="subtitle">Ready to start your success story?</h2>
+            <p className="description">
+              Signin to our website and start leafing through your notes today!
+            </p>
+          </div>
+
+          <button className="google-btn" onClick={onSignIn}>
+            <FcGoogle size={20} />
             Sign in with Google
           </button>
-          <p className="text-xs text-gray-400 mt-2">We respect your privacy.</p>
+
+          <p className="terms">
+            By continuing, you agree to our{" "}
+            <a href="#" className="link">
+              Terms & Conditions
+            </a>.
+          </p>
         </div>
       </div>
-    );
-  }
-  
+
+      {/* Right Panel */}
+      <div className="signin-right">
+        <img src={illustration} alt="Illustration" className="illustration" />
+      </div>
+    </div>
+  );
+}
