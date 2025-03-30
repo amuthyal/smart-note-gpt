@@ -1,48 +1,71 @@
 .note-input-container {
-    width: 100%;
-    max-width: 640px;
-    background-color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .note-input {
-    flex-grow: 1;
-    font-size: 14px;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    color: #333;
-  }
-  
-  .note-button {
-    font-size: 14px;
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-  }
-  
-  .note-button.save {
-    background-color: #4caf50;
-  }
-  
-  .note-button.save:hover {
-    background-color: #388e3c;
-  }
-  
-  .note-button.summarize {
-    background-color: #7e57c2;
-  }
-  
-  .note-button.summarize:hover {
-    background-color: #5e35b1;
-  }
-  
+  background: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  cursor: text;
+  max-width: 1000px; /* increase max width */
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.note-input-container input,
+.note-input-container textarea {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
+  resize: none; /* disable user-resize, we’ll handle it */
+  overflow: hidden;
+}
+
+.note-input-textarea {
+  min-height: 40px;
+  line-height: 1.5;
+  font-family: inherit;
+  padding: 4px 0;
+}
+
+.note-input-title {
+  font-weight: bold;
+}
+
+.note-input-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.save-button {
+  background-color: #4caf50;
+  border: none;
+  padding: 6px 14px;
+  color: white;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.save-button:hover {
+  background-color: #43a047;
+}
+
+.close-button {
+  background-color: #888;
+  border: none;
+  padding: 6px 14px;
+  color: white;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.close-button:hover {
+  background-color: #666;
+}

@@ -11,6 +11,8 @@ import {
 import {
   collection,
   addDoc,
+  updateDoc,
+  doc,
   query,
   where,
   onSnapshot,
@@ -52,16 +54,21 @@ export default function HomePage() {
     setFilteredNotes(null);
   };
 
-  const summarizeNote = async () => {
-    if (!note.trim()) return;
-    setLoadingSummary(true);
+  const updateNote = async (id: string, updatedContent: string) => {
+    const ref = doc(db, "notes", id);
+    await updateDoc(ref, {
+      content: updatedContent,
+      summary: null, // clear old summary
+    });
+  };
 
+  const summarizeNoteById = async (id: string, content: string) => {
     try {
       const response = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
           model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: `Summarize this note:\n\n${note}` }],
+          messages: [{ role: "user", content: `Summarize this note:\n\n${content}` }],
           temperature: 0.5,
         },
         {
@@ -73,13 +80,11 @@ export default function HomePage() {
       );
 
       const result = response.data.choices[0].message.content;
-      setSummary(result);
+      const ref = doc(db, "notes", id);
+      await updateDoc(ref, { summary: result });
     } catch (err) {
       console.error("Summarization failed:", err);
-      setSummary("Error generating summary.");
     }
-
-    setLoadingSummary(false);
   };
 
   const fetchNotes = async (uid: string) => {
@@ -159,11 +164,14 @@ export default function HomePage() {
           note={note}
           onChange={setNote}
           onSave={saveNote}
-          onSummarize={summarizeNote}
           loading={loadingSummary}
         />
 
-        <NoteList notes={filteredNotes ?? notes} />
+        <NoteList
+          notes={filteredNotes ?? notes}
+          onSave={updateNote}
+          onSummarize={summarizeNoteById}
+        />
       </div>
     </div>
   );
