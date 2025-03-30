@@ -22,6 +22,9 @@ function App() {
   const [summary, setSummary] = useState("");
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [notes, setNotes] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredNotes, setFilteredNotes] = useState<any[] | null>(null);
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -55,6 +58,7 @@ function App() {
 
     setNote("");
     setSummary("");
+    setFilteredNotes(null);
   };
 
   const fetchNotes = async (uid: string) => {
@@ -88,7 +92,7 @@ function App() {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`
+            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
           },
         }
       );
@@ -101,6 +105,53 @@ function App() {
     }
 
     setLoadingSummary(false);
+  };
+
+  const handleAISearch = async () => {
+    if (!searchQuery.trim() || notes.length === 0) return;
+
+    setSearching(true);
+    try {
+      const messages = [
+        {
+          role: "system",
+          content:
+            "You are an assistant that filters and finds relevant notes for a user based on their query.",
+        },
+        {
+          role: "user",
+          content: `Here are the user's notes:\n${notes
+            .map((n, i) => `Note ${i + 1}: ${n.content}`)
+            .join("\n")}\n\nQuery: ${searchQuery}\n\nReturn the most relevant notes.`,
+        },
+      ];
+
+      const res = await axios.post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: "gpt-3.5-turbo",
+          messages,
+          temperature: 0.3,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+          },
+        }
+      );
+
+      const reply = res.data.choices[0].message.content;
+      const matches = notes.filter((note) =>
+        reply.toLowerCase().includes(note.content.slice(0, 20).toLowerCase())
+      );
+
+      setFilteredNotes(matches);
+    } catch (error) {
+      console.error("AI Search failed:", error);
+      setFilteredNotes([]);
+    }
+
+    setSearching(false);
   };
 
   return (
@@ -158,10 +209,26 @@ function App() {
             </div>
           )}
 
+          <input
+            type="text"
+            placeholder="Search notes with AI..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full border p-2 rounded mt-4"
+          />
+          <button
+            onClick={handleAISearch}
+            className="bg-indigo-600 text-white px-4 py-2 rounded mt-2 w-full"
+          >
+            {searching ? "Searching..." : "Search with GPT"}
+          </button>
+
           <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-2">Your Notes</h2>
+            <h2 className="text-lg font-semibold mb-2">
+              {filteredNotes ? "Search Results" : "Your Notes"}
+            </h2>
             <ul className="space-y-4">
-              {notes.map((n) => (
+              {(filteredNotes ?? notes).map((n) => (
                 <li key={n.id} className="border p-3 rounded bg-white">
                   <p className="font-medium">{n.content}</p>
                   {n.summary && (
