@@ -18,12 +18,20 @@ functions/lib/
 functions/.firebase/
 functions/.firebaserc
 
-# Environment files
+# Compiled Firebase functions (in case of TypeScript builds)
+functions/lib/
+
+# Environment variables and Firebase config
 .env
+*.env.*
 .env.local
 .env.development.local
 .env.production.local
 .env.test.local
+firebaseConfig.ts
+
+# GitHub secrets (if accidentally committed)
+replacements.txt
 
 # Mac system files
 .DS_Store
@@ -31,11 +39,11 @@ functions/.firebaserc
 # VSCode settings
 .vscode/
 
-# Lint & coverage reports
+# Lint & test coverage
 coverage/
 .eslintcache
 
-# IDEs and editors
+# IDE/editor settings
 .idea/
 *.sublime-project
 *.sublime-workspace
@@ -44,7 +52,7 @@ coverage/
 Thumbs.db
 Desktop.ini
 
-# Ignore lock file if you're using yarn or want to hide npm’s
+# Lock files (optional - use depending on team policy)
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
