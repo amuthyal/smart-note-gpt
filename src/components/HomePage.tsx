@@ -77,20 +77,11 @@ export default function HomePage() {
   const summarizeNoteById = async (id: string, content: string) => {
     try {
       const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: `Summarize this note:\n\n${content}` }],
-          temperature: 0.5,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-          },
-        }
+        import.meta.env.VITE_FIREBASE_FUNCTION_URL!,
+        { content }
       );
-      const result = response.data.choices[0].message.content;
+
+      const result = response.data.summary;
       const ref = doc(db, "notes", id);
       await updateDoc(ref, { summary: result });
     } catch (err) {
@@ -113,34 +104,15 @@ export default function HomePage() {
     if (!searchQuery.trim() || notes.length === 0) return;
     setSearching(true);
     try {
-      const messages = [
-        {
-          role: "system",
-          content: "You are an assistant that filters and finds relevant notes for a user based on their query.",
-        },
-        {
-          role: "user",
-          content: `Here are the user's notes:\n${notes
-            .map((n, i) => `Note ${i + 1}: ${n.content}`)
-            .join("\n")}\n\nQuery: ${searchQuery}\n\nReturn the most relevant notes.`,
-        },
-      ];
+      const content = `Here are the user's notes:\n${notes
+        .map((n, i) => `Note ${i + 1}: ${n.content}`)
+        .join("\n")}\n\nQuery: ${searchQuery}\n\nReturn the most relevant notes.`;
 
-      const res = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages,
-          temperature: 0.3,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-          },
-        }
-      );
+      const res = await axios.post(import.meta.env.VITE_FIREBASE_FUNCTION_URL!, {
+        content,
+      });
 
-      const reply = res.data.choices[0].message.content;
+      const reply = res.data.summary;
       const matches = notes.filter((note) =>
         reply.toLowerCase().includes(note.content.slice(0, 20).toLowerCase())
       );

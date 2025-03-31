@@ -8,7 +8,12 @@ type NoteModalProps = {
   content: string;
   summary?: string;
   onClose: () => void;
-  onUpdateNote: (id: string, updatedContent: string, updatedSummary?: string, updatedTitle?: string) => void;
+  onUpdateNote: (
+    id: string,
+    updatedContent: string,
+    updatedSummary?: string,
+    updatedTitle?: string
+  ) => void;
 };
 
 export default function NoteModal({
@@ -29,20 +34,10 @@ export default function NoteModal({
     setLoading(true);
     try {
       const res = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: `Summarize this note:\n\n${updatedContent}` }],
-          temperature: 0.5,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-          },
-        }
+        "https://us-central1-smart-note-gpt.cloudfunctions.net/api/summarize",
+        { content: updatedContent }
       );
-      const generated = res.data.choices[0].message.content;
+      const generated = res.data.summary;
       setUpdatedSummary(generated);
       onUpdateNote(id, updatedContent, generated, updatedTitle);
     } catch (error) {
