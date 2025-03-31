@@ -1,54 +1,111 @@
-# React + TypeScript + Vite
+# 🧠 Smart Note App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, AI-powered note-taking web app built with **React**, **Firebase**, and **OpenAI GPT-3.5**. Create, edit, summarize, and search notes with a simple, modern interface.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ✨ Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- 📝 Take notes with **titles** and full content
+- 🤖 Generate summaries using **GPT-3.5**
+- 🔍 Search notes using **AI-powered filtering**
+- 🔐 Sign in with **Google (Firebase Auth)**
+- 💾 Store notes in **Firebase Firestore**
+- 🧊 Edit notes inside **modals**
+- 🧱 Clean, responsive UI with **custom CSS**
+- ✅ Notes persist across refreshes
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ⚙️ Tech Stack
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- **Frontend:** React + TypeScript
+- **Auth & Database:** Firebase (Auth + Firestore)
+- **AI:** OpenAI GPT-3.5 API
+- **Styling:** Plain CSS (no Tailwind)
+- **Build Tool:** Vite
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/your-username/smart-note-app.git
+cd smart-note-app
+
+2. Install Dependencies
+npm install
+
+3. Setup Environment Variables
+VITE_OPENAI_API_KEY=your-openai-api-key
+
+4. Firebase Setup
+
+Go to Firebase Console
+
+Create a project
+
+Enable Google Sign-in under Authentication
+
+Enable Cloud Firestore and set appropriate security rules
+
+Add your Firebase config to firebaseConfig.ts:
+// src/firebaseConfig.ts
+export const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "..."
+};
+
+5. Run the Dev Server
+npm run dev
+
+App runs at http://localhost:5173
+
+📁 Project Structure
+src/
+├── components/
+│   ├── NoteInput.tsx
+│   ├── NoteCard.tsx
+│   ├── NoteModal.tsx
+│   ├── NoteList.tsx
+│   └── SearchBar.tsx
+├── pages/
+│   └── HomePage.tsx
+├── firebaseConfig.ts
+├── App.tsx
+├── main.tsx
+public/
+└── index.html
+
+📦 Future Improvements
+🗃️ Note organization (folders/tags)
+
+🌙 Dark mode toggle
+
+📤 Export notes to markdown/PDF
+
+🧹 Delete/archive notes
+
+📱 Mobile app (React Native or PWA)
+
+📜 License
+MIT — free for personal and commercial use.
+
+🙏 Acknowledgements
+OpenAI
+
+Firebase
+
+React
+
+Made with ❤️ by Akhila Muthyala
+
+
