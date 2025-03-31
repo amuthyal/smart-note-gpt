@@ -2,16 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyD4ZfI0F2_bOO--7_duMKbM3_3dIxbzQMw",
-    authDomain: "smart-note-gpt.firebaseapp.com",
-    projectId: "smart-note-gpt",
-    storageBucket: "smart-note-gpt.firebasestorage.app",
-    messagingSenderId: "665004871094",
-    appId: "1:665004871094:web:c8ad7df69be032b2398517",
-    measurementId: "G-NWKLXD1M8T"
-  };
-  
+export const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
 const app = initializeApp(firebaseConfig);
 
