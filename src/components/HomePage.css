@@ -2,17 +2,32 @@
   min-height: 100vh;
   background-color: #f8f9fa;
   padding: 24px;
-  position: relative;
 }
 
-.top-right-controls {
-  position: absolute;
-  top: 24px;
-  right: 24px;
+.homepage-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.homepage-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.logout-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 6px;
+}
+
+.user-info {
+  font-size: 14px;
+  color: #555;
 }
 
 .logout-button {
@@ -28,18 +43,4 @@
 
 .logout-button:hover {
   background-color: #c62828;
-}
-
-.user-info {
-  font-size: 14px;
-  color: #555;
-  margin-top: 4px;
-}
-
-.homepage-wrapper {
-  max-width: 960px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
 }

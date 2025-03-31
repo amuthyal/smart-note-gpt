@@ -7,7 +7,7 @@ type NoteCardProps = {
   title?: string;
   content: string;
   summary?: string;
-  onSave: (id: string, updatedContent: string, updatedSummary?: string) => void;
+  onSave: (id: string, updatedContent: string, updatedSummary?: string, updatedTitle?: string) => void;
   onSummarize: (id: string, content: string) => void;
 };
 
@@ -38,6 +38,7 @@ export default function NoteCard({
       {openModal && (
         <NoteModal
           id={id}
+          title={title}
           content={content}
           summary={summary}
           onClose={() => setOpenModal(false)}

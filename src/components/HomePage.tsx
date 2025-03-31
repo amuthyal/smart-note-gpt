@@ -3,7 +3,11 @@ import NoteInput from "./NoteInput";
 import SearchBar from "./SearchBar";
 import NoteList from "./NoteList";
 import { auth, db } from "../firebaseConfig";
-import { signOut, onAuthStateChanged, User } from "firebase/auth";
+import {
+  signOut,
+  onAuthStateChanged,
+  User,
+} from "firebase/auth";
 import {
   collection,
   addDoc,
@@ -20,6 +24,7 @@ import "./HomePage.css";
 export default function HomePage() {
   const [user, setUser] = useState<User | null>(null);
   const [note, setNote] = useState("");
+  const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,21 +46,32 @@ export default function HomePage() {
     if (!note.trim() || !user) return;
     await addDoc(collection(db, "notes"), {
       uid: user.uid,
+      title: title || null,
       content: note,
       summary: summary || null,
       createdAt: Timestamp.now(),
     });
+    setTitle("");
     setNote("");
     setSummary("");
     setFilteredNotes(null);
   };
 
-  const updateNote = async (id: string, updatedContent: string) => {
+  const updateNote = async (
+    id: string,
+    updatedContent: string,
+    updatedSummary?: string,
+    updatedTitle?: string
+  ) => {
     const ref = doc(db, "notes", id);
-    await updateDoc(ref, {
+    const updateData: any = {
       content: updatedContent,
-      summary: null,
-    });
+      summary: updatedSummary ?? null,
+    };
+    if (updatedTitle !== undefined) {
+      updateData.title = updatedTitle;
+    }
+    await updateDoc(ref, updateData);
   };
 
   const summarizeNoteById = async (id: string, content: string) => {
@@ -74,7 +90,6 @@ export default function HomePage() {
           },
         }
       );
-
       const result = response.data.choices[0].message.content;
       const ref = doc(db, "notes", id);
       await updateDoc(ref, { summary: result });
@@ -101,8 +116,7 @@ export default function HomePage() {
       const messages = [
         {
           role: "system",
-          content:
-            "You are an assistant that filters and finds relevant notes for a user based on their query.",
+          content: "You are an assistant that filters and finds relevant notes for a user based on their query.",
         },
         {
           role: "user",
@@ -139,16 +153,24 @@ export default function HomePage() {
     setSearching(false);
   };
 
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredNotes(null);
+    }
+  }, [searchQuery]);
+
   return (
     <div className="homepage-container">
-      <div className="top-right-controls">
-        <button onClick={logout} className="logout-button">
-          Logout
-        </button>
-        <p className="user-info">Logged in as {user?.displayName}</p>
-      </div>
-
       <div className="homepage-wrapper">
+        <div className="homepage-header">
+          <div className="logout-container">
+            <button onClick={logout} className="logout-button">
+              Logout
+            </button>
+            <p className="user-info">Logged in as {user?.displayName}</p>
+          </div>
+        </div>
+
         <SearchBar
           query={searchQuery}
           onChange={setSearchQuery}
@@ -158,7 +180,9 @@ export default function HomePage() {
 
         <NoteInput
           note={note}
+          title={title}
           onChange={setNote}
+          onTitleChange={setTitle}
           onSave={saveNote}
           loading={loadingSummary}
         />

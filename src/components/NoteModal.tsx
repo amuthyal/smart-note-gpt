@@ -4,20 +4,23 @@ import axios from "axios";
 
 type NoteModalProps = {
   id: string;
+  title?: string;
   content: string;
   summary?: string;
   onClose: () => void;
-  onUpdateNote: (id: string, updatedContent: string, updatedSummary?: string) => void;
+  onUpdateNote: (id: string, updatedContent: string, updatedSummary?: string, updatedTitle?: string) => void;
 };
 
 export default function NoteModal({
   id,
+  title: initialTitle,
   content,
   summary,
   onClose,
   onUpdateNote,
 }: NoteModalProps) {
   const [updatedContent, setUpdatedContent] = useState(content);
+  const [updatedTitle, setUpdatedTitle] = useState(initialTitle || "");
   const [updatedSummary, setUpdatedSummary] = useState(summary || "");
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +44,7 @@ export default function NoteModal({
       );
       const generated = res.data.choices[0].message.content;
       setUpdatedSummary(generated);
-      onUpdateNote(id, updatedContent, generated); // save summary too
+      onUpdateNote(id, updatedContent, generated, updatedTitle);
     } catch (error) {
       console.error("Failed to summarize:", error);
     }
@@ -49,21 +52,32 @@ export default function NoteModal({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setUpdatedContent(value);
-    setUpdatedSummary(""); // clear existing summary when editing
+    setUpdatedContent(e.target.value);
+    setUpdatedSummary("");
+    setEditing(true);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpdatedTitle(e.target.value);
     setEditing(true);
   };
 
   const handleSaveAndClose = () => {
-    onUpdateNote(id, updatedContent, updatedSummary || undefined);
+    onUpdateNote(id, updatedContent, updatedSummary || undefined, updatedTitle);
     setEditing(false);
-    onClose(); // close modal after save
+    onClose();
   };
 
   return (
     <div className="note-modal-overlay">
       <div className="note-modal">
+        <input
+          type="text"
+          className="note-modal-title"
+          value={updatedTitle}
+          onChange={handleTitleChange}
+          placeholder="Title"
+        />
         <textarea
           className="note-modal-textarea"
           value={updatedContent}

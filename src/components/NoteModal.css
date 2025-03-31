@@ -21,6 +21,15 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
   }
   
+  .note-modal-title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  
   .note-modal-textarea {
     width: 100%;
     height: 200px;
