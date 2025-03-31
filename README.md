@@ -2,8 +2,7 @@
 
 A clean, AI-powered note-taking web app built with **React**, **Firebase**, and **OpenAI GPT-3.5**. Create, edit, summarize, and search notes with a simple, modern interface.
 
-
-
+![Smart Note App Screenshot](./src/assets/preview.png)
 ---
 
 ## ✨ Features
