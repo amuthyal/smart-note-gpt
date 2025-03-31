@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import "./NoteInput.css";
 // ...
 
 export default function NoteInput({ note, onChange, onSave }: NoteInputProps) {
