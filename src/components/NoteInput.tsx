@@ -1,39 +1,35 @@
-import { useState, useRef, useEffect } from "react";
-import "./NoteInput.css";
-
-type NoteInputProps = {
-  note: string;
-  onChange: (val: string) => void;
-  onSave: () => void;
-};
+import { useRef, useState, useEffect } from "react";
+// ...
 
 export default function NoteInput({ note, onChange, onSave }: NoteInputProps) {
   const [expanded, setExpanded] = useState(false);
   const [title, setTitle] = useState("");
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
-    }
-  }, [note]);
 
   const handleSave = () => {
     if (note.trim()) {
       onSave();
       setTitle("");
-      onChange(""); // clear input
+      onChange("");
       setExpanded(false);
     }
   };
 
-  const handleClose = () => {
-    setExpanded(false);
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setTitle("");
-    onChange(""); // clear content
+    onChange("");
+    setExpanded(false);
   };
+
+  // Resize only to fit content height
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto"; // Reset height
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+  }, [note]);
 
   return (
     <div
@@ -52,7 +48,7 @@ export default function NoteInput({ note, onChange, onSave }: NoteInputProps) {
 
       <textarea
         ref={textareaRef}
-        className="note-input-textarea"
+        className="note-input-field"
         placeholder="Take a note..."
         value={note}
         onChange={(e) => onChange(e.target.value)}

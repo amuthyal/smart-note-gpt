@@ -3,11 +3,7 @@ import NoteInput from "./NoteInput";
 import SearchBar from "./SearchBar";
 import NoteList from "./NoteList";
 import { auth, db } from "../firebaseConfig";
-import {
-  signOut,
-  onAuthStateChanged,
-  User,
-} from "firebase/auth";
+import { signOut, onAuthStateChanged, User } from "firebase/auth";
 import {
   collection,
   addDoc,
@@ -58,7 +54,7 @@ export default function HomePage() {
     const ref = doc(db, "notes", id);
     await updateDoc(ref, {
       content: updatedContent,
-      summary: null, // clear old summary
+      summary: null,
     });
   };
 
@@ -145,14 +141,14 @@ export default function HomePage() {
 
   return (
     <div className="homepage-container">
-      <div className="homepage-wrapper">
-        <div className="homepage-header">
-          <p className="user-info">Logged in as {user?.displayName}</p>
-          <button onClick={logout} className="logout-button">
-            Logout
-          </button>
-        </div>
+      <div className="top-right-controls">
+        <button onClick={logout} className="logout-button">
+          Logout
+        </button>
+        <p className="user-info">Logged in as {user?.displayName}</p>
+      </div>
 
+      <div className="homepage-wrapper">
         <SearchBar
           query={searchQuery}
           onChange={setSearchQuery}

@@ -1,39 +1,27 @@
 .note-empty {
-    margin-top: 64px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #999;
-  }
-  
-  .note-icon {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 12px;
-    stroke: #ccc;
-  }
-  
-  .note-empty-text {
-    font-size: 14px;
-  }
-  
-  .note-list {
-    margin-top: 32px;
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr;
-  }
-  
-  @media (min-width: 640px) {
-    .note-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .note-list {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
+  margin-top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+}
+
+.note-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 12px;
+  stroke: #ccc;
+}
+
+.note-empty-text {
+  font-size: 14px;
+}
+
+.note-list {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+}

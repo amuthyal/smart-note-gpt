@@ -41,6 +41,7 @@ export default function NoteModal({
       );
       const generated = res.data.choices[0].message.content;
       setUpdatedSummary(generated);
+      onUpdateNote(id, updatedContent, generated); // save summary too
     } catch (error) {
       console.error("Failed to summarize:", error);
     }
@@ -48,14 +49,16 @@ export default function NoteModal({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setUpdatedContent(e.target.value);
+    const value = e.target.value;
+    setUpdatedContent(value);
+    setUpdatedSummary(""); // clear existing summary when editing
     setEditing(true);
-    setUpdatedSummary("");
   };
 
-  const handleSave = () => {
+  const handleSaveAndClose = () => {
     onUpdateNote(id, updatedContent, updatedSummary || undefined);
     setEditing(false);
+    onClose(); // close modal after save
   };
 
   return (
@@ -71,7 +74,7 @@ export default function NoteModal({
           <button onClick={handleSummarize} disabled={loading}>
             {loading ? "Summarizing..." : "Summarize"}
           </button>
-          <button onClick={handleSave}>Save</button>
+          <button onClick={handleSaveAndClose}>Save</button>
           <button onClick={onClose}>Close</button>
         </div>
         {updatedSummary && !editing && (

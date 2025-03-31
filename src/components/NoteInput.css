@@ -5,12 +5,12 @@
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
   cursor: text;
-  max-width: 1000px; /* increase max width */
+  width: 90%;
+  max-width: 960px;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 100%;
 }
 
 .note-input-container input,
@@ -19,19 +19,20 @@
   outline: none;
   font-size: 16px;
   width: 100%;
-  resize: none; /* disable user-resize, we’ll handle it */
+  resize: none;
   overflow: hidden;
-}
-
-.note-input-textarea {
-  min-height: 40px;
   line-height: 1.5;
-  font-family: inherit;
-  padding: 4px 0;
 }
 
 .note-input-title {
   font-weight: bold;
+}
+
+.note-input-field {
+  min-height: 32px;
+  max-height: 300px;
+  overflow-y: hidden;
+  font-family: inherit;
 }
 
 .note-input-actions {
@@ -56,7 +57,7 @@
 }
 
 .close-button {
-  background-color: #888;
+  background-color: #555;
   border: none;
   padding: 6px 14px;
   color: white;
@@ -67,5 +68,5 @@
 }
 
 .close-button:hover {
-  background-color: #666;
+  background-color: #444;
 }
